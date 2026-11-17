@@ -371,11 +371,29 @@
       currentQuestions.push({ q: val, type: "text" });
       renderCustom();
     }
-
-    function finishQuiz() {
-      if (currentQuestions.length === 0) return alert("Add at least one question");
-      showPage("result");
+  async function finishQuiz() {
+  if (currentQuestions.length === 0) return alert("Add at least one question");
+  
+  try {
+    const response = await fetch('/api/quiz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questions: currentQuestions, creator: 'User' })
+    });
+    const result = await response.json();
+    
+    if (result.id) {
+      const link = window.location.origin + '/q/' + result.id;
+      const shareBox = document.querySelector('.share-link');
+      if (shareBox) shareBox.textContent = link;
     }
+  } catch (e) {
+    console.log(e);
+  }
+  
+  showPage("result");
+}
+    
   </script>
 </body>
 </html>

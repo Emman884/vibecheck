@@ -12,7 +12,6 @@ const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Helper: get or create simple user by username
 async function getOrCreateUser(username) {
   if (!username) username = "guest_" + Math.random().toString(36).slice(2, 8);
   let { data } = await supabase.from('users').select('*').eq('username', username).single();
